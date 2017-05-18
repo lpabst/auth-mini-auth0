@@ -1,4 +1,5 @@
 var express = require('express')
+, session = require('express-session')
 , bodyParser = require('body-parser')
 , passport = require('passport')
 , Auth0Strategy = require('passport-auth0')
@@ -6,7 +7,7 @@ var express = require('express')
 
 
 // ALWAYS DO THESE IN THIS PROPER ORDER
-var app = modules.exports = express();
+var app = module.exports = express();
 
 app.use(session({
     secret: config.secret,
@@ -19,11 +20,12 @@ app.use(passport.session());
 
 
 passport.use(new Auth0Strategy({
-    domain: '',
-    clientID: '',
-    clientSecret: '',
-    callbackURL: ''
+    domain: 'lpabst.auth0.com',
+    clientID: 'y13ieT4V4Bw4qrqCPh4k76SAyxMa0QqH',
+    clientSecret: 'S09J-TgXMa39t_lRGO2iUtTQag3dmodFTmhKIz38YMz6cG_3r5i8bh6dZjHfpIwv',
+    callbackURL: '/auth/callback'
 }, function(accessToken, refreshToken, extraParams, profile, done){
+    // Normally we would find the user in the DB here, then return/invoke done;
     return done(null, profile);
 }));
 
