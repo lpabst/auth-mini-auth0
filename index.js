@@ -51,7 +51,7 @@ app.get('/auth/callback',
     }
 );
 
-// Create a viewer endpoint;
+// This creates a viewer endpoint that displays the whole user object that Auth0 sends back;
 app.get('/me', function(req, res, next){
     res.send( req.user );
 });
