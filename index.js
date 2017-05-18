@@ -29,6 +29,36 @@ passport.use(new Auth0Strategy({
     return done(null, profile);
 }));
 
+// This user that is returned is what we will pass into express sessions for Authentication
+passport.serializeUser(function(user, done){
+    return done(null, user);
+});
+
+// the deserializer is what puts the user object onto req.user;
+passport.deserializeUser(function(userObj, done){
+    return done(null, userObj);
+});
+
+//This is how we start the auth0 process
+app.get('/auth', 
+    passport.authenticate('auth0')
+);
+
+//This is where the auth0 returns user. this must match the callbackURL above from passport.use;
+app.get('/auth/callback', 
+    passport.authenticate('auth0', {successRedirect: '/', failureRedirect: '/login'}), function(req, res){
+        res.status(200).send(req.user);
+    }
+);
+
+// Create a viewer endpoint;
+app.get('/me', function(req, res, next){
+    res.send( req.user );
+});
+
+
+
+
 
 
 
